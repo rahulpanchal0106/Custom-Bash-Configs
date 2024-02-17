@@ -35,6 +35,8 @@ This repository contains custom bash configurations that can be used to personal
    ```bash
    source ~/.bashrc
    ```
+5. Now type the name of copied function in your bash terminal. 
+
 
 ## Contributing
 
