@@ -1,0 +1,27 @@
+
+-The count function was developed to simplify the process of counting files in a directory. It offers a more streamlined alternative to composing lengthy commands for such a basic task, aiming to enhance user convenience and efficiency in the Bash shell environment.
+
+-It provides the capability to count various types of files beyond just regular files using a very simple prompt, offering enhanced versatility compared to traditional methods of file counting in a directory.
+
+----------------------------------------------------
+
+Before:
+	ls -l | grep "\.txt$" | wc -l
+After:
+	count .txt
+
+----------------------------------------------------
+
+Here are the functionalities this function provides:
+
+count --help	- Concise description about options for this function.
+
+count .exe		- Counts and Lists all the .exe files in the current directory.
+
+count .txt ls	- Counts and Lists all the .txt files in the current directory.
+
+count /		- Counts and Lists all the directories in the current directory.
+
+count / ls		- Counts and lists all the directories, sub-subdirectories and files inside each directory.
+
+
