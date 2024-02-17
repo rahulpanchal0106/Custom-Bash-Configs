@@ -14,7 +14,7 @@ This repository contains custom bash configurations that can be used to personal
 
 1. Copy the code from a perticular function directory
 
-2. Paste the function into you `~/.bashrc` or `~/.bash_profile` configuration file.
+2. Paste the function into your `~/.bashrc` or `~/.bash_profile` configuration file.
 
 3. Save the changes and exit the text editor.
 
