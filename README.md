@@ -12,7 +12,7 @@ This repository contains custom bash configurations that can be used to personal
 
 ### Setup
 
-1. Copy the code from a perticular function directory
+1. Copy the function code from shell script in their respective dirctories, that is of `.sh` type.
 
 2. Paste the function into your `~/.bashrc` or `~/.bash_profile` configuration file.
 
