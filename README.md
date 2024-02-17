@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains custom bash configurations that can be used to personalize your shell environment. The main purpose of this configuration is to move the `.bashrc` file to a custom directory (`~/new_dir`) and update the `.bash_profile` or `.bashrc` to source the `.bashrc` file from this new location.
+This repository contains custom bash configurations that can be used to personalize your shell environment.
 
 ## Usage
 
@@ -23,8 +23,8 @@ This repository contains custom bash configurations that can be used to personal
    ```bash
    exec bash
    ```
-   
-  or
+
+   or
   
    ```bash
    source ~/.bash_profile
