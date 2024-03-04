@@ -241,6 +241,11 @@ fi
 
 #echo " >>>>>>>>>"$PWD"<======>" $(date + "%H:%M")
 echo -ne "\033]0;Bash 🐚 \007"
+CURRENT_TIME=0
+TTSOTT_HOURS=0
+TTSOTT_MINUTES=0
+TTSOTT_SECONDS=0
+MSG=" "
 update_ps1(){
 
 	CURRENT_TIME=$(date +%s)
@@ -248,16 +253,28 @@ update_ps1(){
 	TTSOTT_HOURS=$((TOTAL_TIME_SPENT_ON_THIS_TERMINAL / 3600))
 	TTSOTT_MINUTES=$((TOTAL_TIME_SPENT_ON_THIS_TERMINAL % 3600 / 60 ))
 	TTSOTT_SECONDS=$((TOTAL_TIME_SPENT_ON_THIS_TERMINAL % 60 ))
-
-	if [[ $time_spent< TOTAL_TIME_SPENT_ON_THIS_TERMINAL ]]; then
-		time_spent=$TOTAL_TIME_SPENT_ON_THIS_TERMINAL;
-	fi
+	last_line=$(tail -n 1 ~/time_spent.txt)
+	value=$(echo "$last_line" | awk -F '=' '$1 == "max" {print $2}')
+	time_spent=$TOTAL_TIME_SPENT_ON_THIS_TERMINAL;
+	if [[ $time_spent -gt $value ]]; then
+		echo " " >> ~/time_spent.txt
+		echo "---------------------------A new Record---------------------------------" >> ~/time_spent.txt
+		echo "📅 $(date)" >> ~/time_spent.txt
+		echo "⌚ $TTSOTT_HOURS:$TTSOTT_MINUTES:$TTSOTT_SECONDS" >> ~/time_spent.txt
+		echo "max=$time_spent" >> ~/time_spent.txt
+#		echo "🟢 |||||| $value < $time_spent"
+		MSG="${DIM_LIGHT_GRAY}🔥 All Time High!${RESET}"
+	else
+#		echo "🔴 !!!!!! $value > $time_spent"
+		remaining=$(($value-$time_spent))
+		MSG="${DIM_LIGHT_GRAY}${remaining}s left ${RESET}"
+	 fi
 
 	if [[ "$PWD" == "$HOME" ]]; then
-		export PS1="🐧:${LIGHT_BLUE} \u ${RESET}at${LIGHT_YELLOW} 🏠 ${RESET}${DIM_LIGHT_GRAY} (⌚ $TTSOTT_HOURS:$TTSOTT_MINUTES:$TTSOTT_SECONDS ) ${RESET}\n💲 "
+		export PS1="🐧:${LIGHT_BLUE} \u ${RESET}at${LIGHT_YELLOW} 🏠 ${RESET}                  ${DIM_LIGHT_GRAY} (⌚ $TTSOTT_HOURS:$TTSOTT_MINUTES:$TTSOTT_SECONDS)${RESET} ${MSG}${RESET}\n💲 "
 		#export PS1="#\# -\e[1;36m \u \e[0m\e[2;37mat\e[0m\e[1;36m 🏠 \e[0m - - -- - - -\e[2;37m \t \n >\e[0m "
     	else
-		export PS1="🐧:${LIGHT_BLUE} \u ${RESET}at${LIGHT_YELLOW} [\w] ${RESET}${DIM_LIGHT_GRAY} (⌚ $TTSOTT_HOURS:$TTSOTT_MINUTES:$TTSOTT_SECONDS ) ${RESET} \n💲 "
+		export PS1="🐧:${LIGHT_BLUE} \u ${RESET}at${LIGHT_YELLOW} [\w] ${RESET}                 ${DIM_LIGHT_GRAY} (⌚ $TTSOTT_HOURS:$TTSOTT_MINUTES:$TTSOTT_SECONDS)${RESET} ${MSG}${RESET} \n💲 "
 		#export PS1="\n${YELLOW}[\w]${RESET}\n${DARK_GRAY}\$ "
         	#export PS1="#\# -\e[1;36m \u \e[0m\e[2;37mat\e[0m\e[1;36m \w \e[0m - - - - - - -\e[2;37m \t \n >\e[0m "
 
@@ -265,11 +282,13 @@ update_ps1(){
 
 	echo ""
 }
-
-max_time(){
-	
-	echo "$time_spent" >> time_spent.txt 
-
+hightime(){
+	local ll=$(tail -n 4 ~/time_spent.txt)
+	third=$(awk '{ lines[NR] = $0 } END { print lines[NR-2] }' ~/time_spent.txt)
+	second=$(awk '{ lines[NR] = $0 } END { print lines[NR-1] }' ~/time_spent.txt)
+	echo $third
+	echo $second
 }
+
 update_ps1
   PROMPT_COMMAND="update_ps1"
