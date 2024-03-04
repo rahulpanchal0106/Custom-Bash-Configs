@@ -260,14 +260,25 @@ update_ps1(){
 		echo " " >> ~/time_spent.txt
 		echo "---------------------------A new Record---------------------------------" >> ~/time_spent.txt
 		echo "📅 $(date)" >> ~/time_spent.txt
-		echo "⌚ $TTSOTT_HOURS:$TTSOTT_MINUTES:$TTSOTT_SECONDS" >> ~/time_spent.txt
+		echo "⌚ ${TTSOTT_HOURS}hr:${TTSOTT_MINUTES}min:${TTSOTT_SECONDS}s" >> ~/time_spent.txt
 		echo "max=$time_spent" >> ~/time_spent.txt
 #		echo "🟢 |||||| $value < $time_spent"
 		MSG="${DIM_LIGHT_GRAY}🔥 All Time High!${RESET}"
 	else
 #		echo "🔴 !!!!!! $value > $time_spent"
 		remaining=$(($value-$time_spent))
-		MSG="${DIM_LIGHT_GRAY}${remaining}s left ${RESET}"
+		rem_hr=$(($remaining / 3600 ))
+		rem_min=$(($remaining % 3600 / 60 ))
+		rem_sec=$(($remaining % 60))
+
+		if [[ $rem_hr -gt 0 ]]; then
+			MSG="${DIM_LIGHT_GRAY}${rem_hr}hr left ${RESET}"
+		elif [[ $rem_min -gt 0 ]]; then
+			MSG="${DIM_LIGHT_GRAY}${rem_min}min left ${RESET}"
+		else 
+			MSG="${DIM_LIGHT_GRAY}${rem_sec}s left ${RESET}"
+		fi
+		
 	 fi
 
 	if [[ "$PWD" == "$HOME" ]]; then
@@ -286,8 +297,9 @@ hightime(){
 	local ll=$(tail -n 4 ~/time_spent.txt)
 	third=$(awk '{ lines[NR] = $0 } END { print lines[NR-2] }' ~/time_spent.txt)
 	second=$(awk '{ lines[NR] = $0 } END { print lines[NR-1] }' ~/time_spent.txt)
-	echo $third
-	echo $second
+	echo "Your longest time on bash shell was,"
+	echo "on $third ,"
+	echo "for $second !"
 }
 
 update_ps1
